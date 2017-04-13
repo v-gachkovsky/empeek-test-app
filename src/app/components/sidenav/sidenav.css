@@ -1,0 +1,40 @@
+md-sidenav {
+  display: block;
+  width: 272px;
+  min-width: 272px;
+  background-color: #2b2f3e;
+  color: white;
+  height: 100%;
+  min-height: 100%;
+}
+
+.sidenav {
+  height: 100%;
+}
+
+h3 {
+  font-size: 1.7em;
+  margin-bottom: 60px;
+}
+
+h3, md-sidenav .inset {
+  font-weight: normal;
+  padding-left: 20px;
+}
+
+md-sidenav a {
+  text-decoration: none;
+  color: white;
+}
+
+md-sidenav md-item-content {
+  height: 55px;
+}
+
+md-sidenav md-item-content:hover {
+  background-color: #ff667a;
+}
+
+.md-item-active {
+  background-color: #ff3753;
+}
