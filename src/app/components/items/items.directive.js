@@ -18,6 +18,8 @@ class ItemsController {
     this.loaded = false;
     this.activeItemIndex = -1;
 
+    this.title = '';
+    this.text = '';
     this.itemsService = itemsService;
 
     $rootScope.$on('$destroy', $rootScope.$on('items:updated', () => {
@@ -27,6 +29,8 @@ class ItemsController {
   }
 
   addComment() {
+    if (this.text === '' || /^\s+$/.test(this.text)) { return; }
+
     if(this.activeItemIndex === -1){
       // Should call alert box with message here
       this.text = '';
@@ -35,7 +39,7 @@ class ItemsController {
 
     this.loaded = false;
 
-    this.itemsService.addComment(this.activeItemIndex, this.text).then((items) => {
+    this.itemsService.addComment(this.activeItemIndex, this.text.trim()).then((items) => {
       this.items = items;
       this.text = '';
       this.loaded = true;
@@ -43,9 +47,11 @@ class ItemsController {
   }
 
   addItem(title) {
+    if (title === '' || /^\s+$/.test(title)) { return; }
+
     this.loaded = false;
 
-    this.itemsService.addItem(title).then((items) => {
+    this.itemsService.addItem(title.trim()).then((items) => {
       this.items = items;
       this.title = '';
       this.loaded = true;
