@@ -10,7 +10,6 @@
 
 .items-loader {
   margin: 0 auto 0 auto;
-  color: #2f96b4;
 }
 
 .items-card,
@@ -60,7 +59,6 @@ md-badge {
 .list-item {
   padding-left: 40px;
   padding-right: 20px;
-  display: block;
   height: 50px;
   list-style: none;
   clear: both;
@@ -157,5 +155,3 @@ md-badge {
   margin: 10px;
   width: 100%;
 }
-
-/*1385*/

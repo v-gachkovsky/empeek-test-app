@@ -12,49 +12,59 @@ export function ItemsDirective() {
 }
 
 class ItemsController {
-  constructor (itemsService, $rootScope) {
+  constructor (itemsService, $rootScope, toastr) {
     'ngInject';
 
-    this.loaded = false;
+    this.itemsLoaded = false;
+    this.commentsLoaded = false;
     this.activeItemIndex = -1;
 
     this.title = '';
     this.text = '';
     this.itemsService = itemsService;
+    this.toastr = toastr;
 
     $rootScope.$on('$destroy', $rootScope.$on('items:updated', () => {
       this.items = itemsService.getItems();
-      this.loaded = true;
+      this.itemsLoaded = true;
+      this.commentsLoaded = true;
     }));
   }
 
   addComment() {
-    if (this.text === '' || /^\s+$/.test(this.text)) { return; }
-
-    if(this.activeItemIndex === -1){
-      // Should call alert box with message here
+    const itemNotSelected = this.activeItemIndex === -1;
+    if(itemNotSelected){
+      this.showErrorMessage('Please select item first');
       this.text = '';
       return;
     }
 
-    this.loaded = false;
+    if (ItemsController.isEmpty(this.text)) {
+      this.showErrorMessage('Please enter your comment first');
+      return;
+    }
+
+    this.commentsLoaded= false;
 
     this.itemsService.addComment(this.activeItemIndex, this.text.trim()).then((items) => {
       this.items = items;
       this.text = '';
-      this.loaded = true;
+      this.commentsLoaded = true;
     });
   }
 
-  addItem(title) {
-    if (title === '' || /^\s+$/.test(title)) { return; }
+  addItem() {
+    if (ItemsController.isEmpty(this.title)) {
+      this.showErrorMessage('Please enter item title first');
+      return;
+    }
 
-    this.loaded = false;
+    this.itemsLoaded = false;
 
-    this.itemsService.addItem(title.trim()).then((items) => {
+    this.itemsService.addItem(this.title.trim()).then((items) => {
       this.items = items;
       this.title = '';
-      this.loaded = true;
+      this.itemsLoaded = true;
     });
   }
 
@@ -67,5 +77,14 @@ class ItemsController {
 
   selectItem(index) {
     this.activeItemIndex = index;
+  }
+
+  showErrorMessage(message) {
+    this.toastr.error(message);
+  }
+
+  // Helpers
+  static isEmpty(string) {
+    return string === '' || /^\s+$/.test(string);
   }
 }
