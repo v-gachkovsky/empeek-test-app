@@ -12,7 +12,7 @@ export function ItemsDirective() {
 }
 
 class ItemsController {
-  constructor (itemsService, $rootScope) {
+  constructor (itemsService, $rootScope, toastr) {
     'ngInject';
 
     this.itemsLoaded = false;
@@ -22,6 +22,7 @@ class ItemsController {
     this.title = '';
     this.text = '';
     this.itemsService = itemsService;
+    this.toastr = toastr;
 
     $rootScope.$on('$destroy', $rootScope.$on('items:updated', () => {
       this.items = itemsService.getItems();
@@ -31,12 +32,15 @@ class ItemsController {
   }
 
   addComment() {
-    if (ItemsController.isEmpty(this.text)) { return; }
-
     const itemNotSelected = this.activeItemIndex === -1;
     if(itemNotSelected){
-      // Should call alert box with message here
+      this.showErrorMessage('Please select item first');
       this.text = '';
+      return;
+    }
+
+    if (ItemsController.isEmpty(this.text)) {
+      this.showErrorMessage('Please enter your comment first');
       return;
     }
 
@@ -50,7 +54,10 @@ class ItemsController {
   }
 
   addItem() {
-    if (ItemsController.isEmpty(this.title)) { return; }
+    if (ItemsController.isEmpty(this.title)) {
+      this.showErrorMessage('Please enter item title first');
+      return;
+    }
 
     this.itemsLoaded = false;
 
@@ -70,6 +77,10 @@ class ItemsController {
 
   selectItem(index) {
     this.activeItemIndex = index;
+  }
+
+  showErrorMessage(message) {
+    this.toastr.error(message);
   }
 
   // Helpers
