@@ -15,13 +15,16 @@ class SidenavController {
   constructor ($location) {
     'ngInject';
 
+    this.$location = $location;
+
     this.menu = [{
       title: 'Overview',
       url: '/overview',
       link: 'home'
     }];
+  }
 
-    this.isActive = (location) => location === $location.path();
-
+  isActive (location) {
+    return location === this.$location.path();
   }
 }

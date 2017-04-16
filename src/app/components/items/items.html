@@ -14,15 +14,20 @@
             <input class="title-input" type="text" placeholder="Type name here..." ng-model="vm.title">
           <!--</md-input-container>-->
           <div>
-            <md-button class="md-raised md-empeek-btn primary-btn" ng-click="vm.addItem(vm.title)" ng-disabled="!vm.loaded">
+            <md-button class="md-raised md-empeek-btn primary-btn" ng-click="vm.addItem(vm.title)" ng-disabled="!vm.itemsLoaded">
               Add New
             </md-button>
           </div>
         </div>
       </md-card-actions>
       <md-card-content>
-        <md-progress-circular ng-disabled="!vm.activated" class="md-accent md-hue-2 items-loader" md-diameter="100" ng-show="!vm.loaded"></md-progress-circular>
-        <ul class="list-items" ng-show="vm.loaded">
+        <md-progress-circular
+          ng-disabled="!vm.activated"
+          class="md-accent md-hue-2 items-loader"
+          md-diameter="100"
+          ng-show="!vm.itemsLoaded">
+        </md-progress-circular>
+        <ul class="list-items" ng-show="vm.itemsLoaded">
 
           <!--class="list-item list-item-active"-->
           <li class="list-item" ng-class="{ 'list-item-active': vm.activeItemIndex === $index }" ng-repeat="item in vm.items" ng-click="vm.selectItem($index)">
@@ -61,6 +66,11 @@
           </li>
 
         </ul>
+        <md-progress-circular
+          class="md-accent md-hue-2 items-loader"
+          md-diameter="100"
+          ng-show="!vm.commentsLoaded">
+        </md-progress-circular>
 
         <div class="new-comment">
           <div class="comment-ava"></div>
