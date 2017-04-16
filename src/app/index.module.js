@@ -6,7 +6,18 @@ import { SidenavDirective } from '../app/components/sidenav/sidenav.directive';
 import { ItemsDirective } from '../app/components/items/items.directive';
 import { ItemsService} from '../app/components/items/items.service';
 
-angular.module('empeekTaskApp', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria', 'ui.router', 'ngMaterial', 'LocalStorageModule'])
+angular.module('empeekTaskApp', [
+  'ngAnimate',
+  'ngCookies',
+  'ngTouch',
+  'ngSanitize',
+  'ngMessages',
+  'ngAria',
+  'ui.router',
+  'ngMaterial',
+  'toastr',
+  'LocalStorageModule'
+])
   .config(config)
   .config(routerConfig)
   .run(runBlock)
