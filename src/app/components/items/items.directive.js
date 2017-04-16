@@ -15,7 +15,8 @@ class ItemsController {
   constructor (itemsService, $rootScope) {
     'ngInject';
 
-    this.loaded = false;
+    this.itemsLoaded = false;
+    this.commentsLoaded = false;
     this.activeItemIndex = -1;
 
     this.title = '';
@@ -24,37 +25,39 @@ class ItemsController {
 
     $rootScope.$on('$destroy', $rootScope.$on('items:updated', () => {
       this.items = itemsService.getItems();
-      this.loaded = true;
+      this.itemsLoaded = true;
+      this.commentsLoaded = true;
     }));
   }
 
   addComment() {
-    if (this.text === '' || /^\s+$/.test(this.text)) { return; }
+    if (ItemsController.isEmpty(this.text)) { return; }
 
-    if(this.activeItemIndex === -1){
+    const itemNotSelected = this.activeItemIndex === -1;
+    if(itemNotSelected){
       // Should call alert box with message here
       this.text = '';
       return;
     }
 
-    this.loaded = false;
+    this.commentsLoaded= false;
 
     this.itemsService.addComment(this.activeItemIndex, this.text.trim()).then((items) => {
       this.items = items;
       this.text = '';
-      this.loaded = true;
+      this.commentsLoaded = true;
     });
   }
 
-  addItem(title) {
-    if (title === '' || /^\s+$/.test(title)) { return; }
+  addItem() {
+    if (ItemsController.isEmpty(this.title)) { return; }
 
-    this.loaded = false;
+    this.itemsLoaded = false;
 
-    this.itemsService.addItem(title.trim()).then((items) => {
+    this.itemsService.addItem(this.title.trim()).then((items) => {
       this.items = items;
       this.title = '';
-      this.loaded = true;
+      this.itemsLoaded = true;
     });
   }
 
@@ -67,5 +70,10 @@ class ItemsController {
 
   selectItem(index) {
     this.activeItemIndex = index;
+  }
+
+  // Helpers
+  static isEmpty(string) {
+    return string === '' || /^\s+$/.test(string);
   }
 }
