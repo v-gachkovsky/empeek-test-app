@@ -16,6 +16,7 @@ class ItemsController {
     'ngInject';
 
     this.itemsLoaded = false;
+    this.itemCountLoaded = false;
     this.commentsLoaded = false;
     this.activeItemIndex = -1;
 
@@ -27,6 +28,7 @@ class ItemsController {
     $rootScope.$on('$destroy', $rootScope.$on('items:updated', () => {
       this.items = itemsService.getItems();
       this.itemsLoaded = true;
+      this.itemCountLoaded = true;
       this.commentsLoaded = true;
     }));
   }
@@ -45,11 +47,13 @@ class ItemsController {
     }
 
     this.commentsLoaded= false;
+    this.itemCountLoaded = false;
 
     this.itemsService.addComment(this.activeItemIndex, this.text.trim()).then((items) => {
       this.items = items;
       this.text = '';
       this.commentsLoaded = true;
+      this.itemCountLoaded = true;
     });
   }
 
