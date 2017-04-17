@@ -22,7 +22,6 @@
       </md-card-actions>
       <md-card-content>
         <md-progress-circular
-          ng-disabled="!vm.activated"
           class="md-accent md-hue-2 items-loader"
           md-diameter="100"
           ng-show="!vm.itemsLoaded">
@@ -32,7 +31,17 @@
           <!--class="list-item list-item-active"-->
           <li class="list-item" ng-class="{ 'list-item-active': vm.activeItemIndex === $index }" ng-repeat="item in vm.items" ng-click="vm.selectItem($index)">
               <span class="md-item-in-list ">
-                {{ item.title }} <md-badge class="md-item-badge">{{ item.comments.length }}</md-badge>
+                {{ item.title }}
+                <md-badge
+                  ng-hide="!vm.itemCountLoaded && $index === vm.activeItemIndex">
+                  {{ item.comments.length }}
+                </md-badge>
+
+                <md-progress-circular
+                  class="md-accent md-hue-2 items-loader item-badge-preloader"
+                  md-diameter="40"
+                  ng-show="!vm.itemCountLoaded && $index === vm.activeItemIndex">
+                </md-progress-circular>
               </span>
             <md-button class="md-raised md-empeek-btn white-btn item-delete-btn" ng-click="vm.deleteItem($index)">
               Delete

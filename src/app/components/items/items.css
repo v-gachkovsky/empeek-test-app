@@ -86,6 +86,12 @@ md-badge {
   float: right;
 }
 
+.item-badge-preloader {
+  float: right;
+  display: inline-block;
+  margin-top: -10px;
+}
+
 /* Comments*/
 
 .text-textarea {
